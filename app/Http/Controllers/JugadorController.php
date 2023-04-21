@@ -106,8 +106,14 @@ class JugadorController extends Controller
             return response()->json(["msg" => "Jugador No Encontrado.","err" => true]);
         }
 
+        // si quiero eliminarlo de manera logica
+
         $jugador->estado = false;
         $jugador->save();
+
+        // Si quiero eliminarlo de manera permanente fisca
+
+        $jugador->delete();
 
         return response()->json(['msg' => "Jugador Eliminado Correctamente.","err" => false]);
     }
