@@ -16,20 +16,27 @@ class JugadorController extends Controller
         return response()->json($jugador,200);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $validData = $request->validate([
+            'nombre_jugador' => 'required',
+            'posicion_jugador' => 'required',
+            'numero_jugador' => 'required',
+            'id_equipo' => 'required'
+        ]);
+
+        $jugador = new Jugador();
+        $jugador->nombre_jugador = $validData['nombre_jugador'];
+        $jugador->posicion_jugador = $validData['posicion_jugador'];
+        $jugador->numero_jugador = $validData['numero_jugador'];
+        $jugador->id_equipo = $validData['id_equipo'];
+        $jugador->estado = 1;
+        $jugador->save();
+        return response()->json($jugador,200);
     }
 
     /**
