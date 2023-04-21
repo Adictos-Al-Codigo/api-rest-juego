@@ -99,8 +99,17 @@ class JugadorController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy($id)
     {
-        //
+        $jugador = Jugador::find($id);
+
+        if (is_null($jugador)) {
+            return response()->json(["msg" => "Jugador No Encontrado.","err" => true]);
+        }
+
+        $jugador->estado = false;
+        $jugador->save();
+
+        return response()->json(['msg' => "Jugador Eliminado Correctamente.","err" => false]);
     }
 }
