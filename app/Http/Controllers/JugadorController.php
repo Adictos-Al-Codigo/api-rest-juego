@@ -36,15 +36,21 @@ class JugadorController extends Controller
         $jugador->id_equipo = $validData['id_equipo'];
         $jugador->estado = 1;
         $jugador->save();
-        return response()->json($jugador,200);
+        return response()->json([$jugador,'message' => 'Jugador Guardado Correctamente.'],200);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show($id)
     {
-        //
+        $jugador = Jugador::find($id);
+
+        if (is_null($jugador)) {
+            return response()->json(['msg' => 'Jugador No Encontrado.','err' => true],404);
+        }
+
+        return response()->json($jugador,200);
     }
 
     /**
