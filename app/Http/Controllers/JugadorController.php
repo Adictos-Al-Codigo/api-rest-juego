@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\JugadorResource;
 use App\Models\Jugador;
 use Illuminate\Http\Request;
 
@@ -13,7 +14,8 @@ class JugadorController extends Controller
     public function index()
     {
         $jugador = Jugador::where('estado',1)->get();
-        return response()->json($jugador,200);
+        return JugadorResource::collection($jugador);
+        // return response()->json($jugador,200);
     }
 
 
@@ -29,14 +31,14 @@ class JugadorController extends Controller
             'id_equipo' => 'required'
         ]);
 
-        $jugador = new Jugador();
-        $jugador->nombre_jugador = $validData['nombre_jugador'];
-        $jugador->posicion_jugador = $validData['posicion_jugador'];
-        $jugador->numero_jugador = $validData['numero_jugador'];
-        $jugador->id_equipo = $validData['id_equipo'];
-        $jugador->estado = 1;
-        $jugador->save();
-        return response()->json([$jugador,'message' => 'Jugador Guardado Correctamente.'],200);
+        return new JugadorResource(Jugador::create([
+            'nombre_jugador' => $validData['nombre_jugador'],
+            'posicion_jugador' => $validData['posicion_jugador'],
+            'numero_jugador' => $validData['numero_jugador'],
+            'id_equipo' => $validData['id_equipo'],
+            'estado' => 1
+        ]));
+        // return response()->json([$jugador,'message' => 'Jugador Guardado Correctamente.'],200);
     }
 
     /**
@@ -103,7 +105,7 @@ class JugadorController extends Controller
         $jugador = Jugador::find($id);
 
         if (is_null($jugador)) {
-            return response()->json(["msg" => "Jugador No Encontrado.","err" => true]);
+            return response()->json(["msg" => "Jugador No Encontrado.","err" => true],404);
         }
 
         // si quiero eliminarlo de manera logica
@@ -115,6 +117,6 @@ class JugadorController extends Controller
 
         $jugador->delete();
 
-        return response()->json(['msg' => "Jugador Eliminado Correctamente.","err" => false]);
+        return response()->json(['msg' => "Jugador Eliminado Correctamente.","err" => false],200);
     }
 }
