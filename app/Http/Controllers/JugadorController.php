@@ -85,13 +85,12 @@ class JugadorController extends Controller
             'id_equipo' => 'required'
         ]);
 
-        $jugador->save([
-            'nombre_jugador' => $validData['nombre_jugador'],
-            'posicion_jugador' => $validData['posicion_jugador'],
-            'numero_jugador' => $validData['numero_jugador'],
-            'id_equipo' => $validData['id_equipo'],
-            'estado' => 1
-        ]);
+        $jugador->nombre_jugador = $validData['nombre_jugador'];
+        $jugador->posicion_jugador = $validData['posicion_jugador'];
+        $jugador->numero_jugador = $validData['numero_jugador'];
+        $jugador->id_equipo = $validData['id_equipo'];
+        $jugador->estado = 1;
+        $jugador->save();
 
         return response()->json($jugador,200);
     }
