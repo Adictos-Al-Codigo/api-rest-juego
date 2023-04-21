@@ -56,17 +56,44 @@ class JugadorController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
-        //
+        $jugador = Jugador::find($id);
+
+        if (is_null($jugador)) {
+            return response()->json(["msg" => "Jugador No Encontrado","err" => true],404);
+        }
+
+        return response()->json($jugador,200);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,$id)
     {
-        //
+        $jugador = Jugador::find($id);
+        
+        if (is_null($jugador)) {
+            return response()->json(["msg" => "Jugador No Encontrado","err" => true]);
+        }
+
+        $validData = $request->validate([
+            'nombre_jugador' => 'required',
+            'posicion_jugador' => 'required',
+            'numero_jugador' => 'required',
+            'id_equipo' => 'required'
+        ]);
+
+        $jugador->save([
+            'nombre_jugador' => $validData['nombre_jugador'],
+            'posicion_jugador' => $validData['posicion_jugador'],
+            'numero_jugador' => $validData['numero_jugador'],
+            'id_equipo' => $validData['id_equipo'],
+            'estado' => 1
+        ]);
+
+        return response()->json($jugador,200);
     }
 
     /**
