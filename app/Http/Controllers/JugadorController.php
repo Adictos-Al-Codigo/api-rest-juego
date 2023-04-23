@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Resources\JugadorResource;
 use App\Models\Jugador;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
 
 class JugadorController extends Controller
 {
@@ -13,7 +15,10 @@ class JugadorController extends Controller
      */
     public function index()
     {
-        $jugador = Jugador::where('estado',1)->get();
+        $jugador = DB::table('_jugador')
+        ->join('_equipo','_jugador.id_equipo','=','_equipo.id')
+        ->select('_jugador.id','_jugador.nombre_jugador','_jugador.posicion_jugador','_jugador.numero_jugador','_equipo.nombre_equipo','_equipo.nombre_director_equipo','logo_equipo')->where('_jugador.estado',1)->get();
+
         // return JugadorResource::collection($jugador);
         return response()->json($jugador,200);
     }
