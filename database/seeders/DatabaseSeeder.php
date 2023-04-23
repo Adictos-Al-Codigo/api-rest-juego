@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call(EquipoSeeder::class);
         $this->call(JugadorSeeder::class);
+        $this->call(Tipo_usuario::class);
     }
 }
