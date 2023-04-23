@@ -14,8 +14,8 @@ class JugadorController extends Controller
     public function index()
     {
         $jugador = Jugador::where('estado',1)->get();
-        return JugadorResource::collection($jugador);
-        // return response()->json($jugador,200);
+        // return JugadorResource::collection($jugador);
+        return response()->json($jugador,200);
     }
 
 
@@ -31,14 +31,22 @@ class JugadorController extends Controller
             'id_equipo' => 'required'
         ]);
 
-        return new JugadorResource(Jugador::create([
-            'nombre_jugador' => $validData['nombre_jugador'],
-            'posicion_jugador' => $validData['posicion_jugador'],
-            'numero_jugador' => $validData['numero_jugador'],
-            'id_equipo' => $validData['id_equipo'],
-            'estado' => 1
-        ]));
-        // return response()->json([$jugador,'message' => 'Jugador Guardado Correctamente.'],200);
+        $jugador = new Jugador();
+        $jugador->nombre_jugador = $validData['nombre_jugador'];
+        $jugador->posicion_jugador = $validData['posicion_jugador'];
+        $jugador->numero_jugador = $validData['numero_jugador'];
+        $jugador->id_equipo = $validData['id_equipo'];
+        $jugador->estado = 1;
+        $jugador->save();
+
+        // return new JugadorResource(Jugador::create([
+        //     'nombre_jugador' => $validData['nombre_jugador'],
+        //     'posicion_jugador' => $validData['posicion_jugador'],
+        //     'numero_jugador' => $validData['numero_jugador'],
+        //     'id_equipo' => $validData['id_equipo'],
+        //     'estado' => 1
+        // ]));
+        return response()->json($jugador,201);
     }
 
     /**
@@ -49,10 +57,12 @@ class JugadorController extends Controller
         $jugador = Jugador::find($id);
 
         if (is_null($jugador)) {
-            return response()->json(['msg' => 'Jugador No Encontrado.','err' => true],404);
+            return response()->json(["msg" => "Jugador No Encontrado"],404);
         }
 
         return response()->json($jugador,200);
+
+        // return new JugadorResource($jugador);
     }
 
     /**
@@ -77,7 +87,7 @@ class JugadorController extends Controller
         $jugador = Jugador::find($id);
         
         if (is_null($jugador)) {
-            return response()->json(["msg" => "Jugador No Encontrado","err" => true]);
+            return response()->json(["msg" => "Jugador No Encontrado","err" => true],404);
         }
 
         $validData = $request->validate([
@@ -94,7 +104,7 @@ class JugadorController extends Controller
         $jugador->estado = 1;
         $jugador->save();
 
-        return response()->json($jugador,200);
+        return response()->json($jugador,202);
     }
 
     /**
@@ -115,7 +125,7 @@ class JugadorController extends Controller
 
         // Si quiero eliminarlo de manera permanente fisca
 
-        $jugador->delete();
+        // $jugador->delete();
 
         return response()->json(['msg' => "Jugador Eliminado Correctamente.","err" => false],200);
     }
