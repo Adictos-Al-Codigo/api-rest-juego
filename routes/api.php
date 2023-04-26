@@ -18,10 +18,11 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::post('login',[UsuarioController::class,'login']);
-Route::resource('jugador',JugadorController::class);
-Route::resource('equipo',EquipoController::class);
-Route::resource('user',UsuarioController::class);
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::resource('jugador',JugadorController::class);
+    Route::resource('equipo',EquipoController::class);
+    Route::resource('user',UsuarioController::class);
 });
+

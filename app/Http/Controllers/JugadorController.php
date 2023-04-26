@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\JugadorResource;
+use App\Models\Equipo;
 use App\Models\Jugador;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -69,6 +70,7 @@ class JugadorController extends Controller
 
         // return new JugadorResource($jugador);
     }
+
 
     /**
      * Show the form for editing the specified resource.
